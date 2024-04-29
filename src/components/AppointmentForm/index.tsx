@@ -35,8 +35,6 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
       if (appointment) {
         updateAppointment(data);
       } else {
-        data.id_paciente = selectedPatient.value;
-        data.nome_paciente = selectedPatient.label;
         saveAppointment(data);
       }
       setModal({ open: false });
@@ -52,10 +50,10 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
           Paciente:
         </label>
         <input
-          {...register('id_paciente')}
+          {...register('id_appointment')}
           id="id_paciente"
           type="hidden"
-          value={appointment?.id_paciente}
+          value={appointment?.id_appointment}
         />
         <Select
           className="text-sm font-medium"
@@ -72,27 +70,27 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
           Data consulta:
         </label>
         <input
-          {...register('data_consulta', { required: true })}
+          {...register('appointment_date', { required: true })}
           type="date"
-          defaultValue={appointment?.data_consulta}
+          defaultValue={appointment?.appointment_date}
           className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
         />
         <label htmlFor="time" className="text-sm font-medium">
           Hora início:
         </label>
         <input
-          {...register('hora_inicio', { required: true })}
+          {...register('beginning', { required: true })}
           type="time"
-          defaultValue={appointment?.hora_inicio}
+          defaultValue={appointment?.beginning}
           className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
         />
         <label htmlFor="time" className="text-sm font-medium">
           Hora fim:
         </label>
         <input
-          {...register('hora_fim', { required: true })}
+          {...register('end', { required: true })}
           type="time"
-          defaultValue={appointment?.hora_fim}
+          defaultValue={appointment?.end}
           className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
         />
         {appointment ? (
@@ -104,7 +102,7 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
               className="mt-3 flex rounded-lg bg-deleteBtn py-2 px-4 transition-colors hover:bg-deleteBtnHover hover:text-secondary"
               onClick={(e) => {
                 e.preventDefault()
-                removeAppointment(appointment.id_consulta)
+                removeAppointment(appointment.id_appointment)
                 setModal({ open: false })
               }}
             >

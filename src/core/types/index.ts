@@ -25,51 +25,48 @@ export interface IAppointmentContext {
 }
 
 export interface IAppointmentForm {
-  id_consulta?: string
-  data_consulta?: string
-  hora_inicio?: string
-  hora_fim?: string
+  id_appointment?: string
+  appointment_date: string;
+  beginning: string;
+  end: string;
   edit?: boolean
 }
 
 export interface IAppointments {
-  id_consulta: string
-  id_paciente: string
-  nome_paciente: string
-  data_consulta: string
-  hora_inicio: string
-  hora_fim: string
+  id_appointment: string;
+  appointment_date: string;
+  beginning: string;
+  end: string;
 }
 
+
 export interface IPatientForm {
-  id_paciente?: string
-  nome_crianca?: number
-  data_nascimento?: string
-  sexo?: string
-  telefone?: string
-  email?: string
-  nome_pai?: string
-  telefone_pai?: number
-  email_pai?: string
-  nome_mae?: string
-  telefone_mae?: number
-  email_mae?: string
+  id_patient?: string
+  name?: string;
+  age?: number;
+  birth?: string;
+  father?: string;
+  mother?: string;
+  guardian: string;
+  address?: string;
+  phone?: string;
+  school?: string;
+  diagnosis?: string;
   edit?: boolean
 }
 
 export interface IPatients {
-  id_paciente: string
-  nome_crianca: number
-  data_nascimento: string
-  sexo: string
-  telefone: string
-  email: string
-  nome_pai: string
-  telefone_pai: number
-  email_pai: string
-  nome_mae: string
-  telefone_mae: number
-  email_mae: string
+  id_patient: string
+  name: string;
+  age: number;
+  birth: string;
+  father: string;
+  mother: string;
+  guardian: string;
+  address: string;
+  phone: string;
+  school: string;
+  diagnosis: string;
 }
 
 export interface ILocalStorage {
