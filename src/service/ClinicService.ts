@@ -63,7 +63,7 @@ class ClinicService {
   }
   
 
-  static async deletePatient(id: number): Promise<any> {
+  static async deletePatient(id: string): Promise<any> {
     const response = await fetch(`${this.BASE_URL}/patient/${id}`, {
       method: 'DELETE',
     });

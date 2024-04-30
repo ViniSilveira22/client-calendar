@@ -1,229 +1,248 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useAppointmentsContext } from '@/context/AppointmentsContext';
-import { useStateContext } from '@/context/StateContext';
 import { IAppointments, IPatients } from '@/core/types';
-import { TextField, Button,  Grid } from '@mui/material';
+import { TextField, Button, Grid, Box, Typography } from '@mui/material';
+import { useAppointmentsContext } from '@/context/AppointmentsContext';
+import { usePatientsContext } from '@/context/PatientsContext';
 
 interface IAppointmentForm {
   appointment?: IAppointments;
   patient?: IPatients;
 }
 
-export const AppointmentForm = ({ appointment, patient }: IAppointmentForm) => {
-  const { saveAppointment, removeAppointment, updateAppointment } = useAppointmentsContext();
-  const { setModal } = useStateContext();
+export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
+  const { saveAppointment } = useAppointmentsContext();
+  const { savePatient } = usePatientsContext();
 
   const [currentStep, setCurrentStep] = useState(1);
-
-  const { register: registerAppointments, handleSubmit: handleSubmitAppointments } = useForm<IAppointments>();
-  const { register: registerPatients, handleSubmit: handleSubmitPatients } = useForm<IPatients>();
-
-  const onSubmitPatient: SubmitHandler<IPatients> = async () => {
-    setCurrentStep(2);
-  };
-
-  const onSubmitAppointment: SubmitHandler<IAppointments> = async (data) => {
-    try {
-      if (appointment) {
-        updateAppointment(data);
+  const [modalTitle, setModalTitle] = useState('Informações');
+  const { register, handleSubmit } = useForm<IAppointmentForm>()
+   const onSubmit: SubmitHandler<IAppointmentForm> = async(data) => {
+      if(appointment){ 
       } else {
-        saveAppointment(data);
+        console.log('teste');
+        savePatient(data.patient!);
+        console.log('teste2');
+
+        //saveAppointment(data.appointment!);
       }
-      setModal({ open: false });
-    } catch (error) {
-      console.error('Error submitting appointment:', error);
+
+  };
+  const handleNextStep = () => {
+    setCurrentStep(currentStep + 1);
+    if (currentStep === 1) {
+      setModalTitle('Instituição');
+    } else if (currentStep === 2) {
+      setModalTitle('Consulta');
     }
   };
 
-
-
   const handlePreviousStep = () => {
-    setCurrentStep(currentStep - 1); // Go back to the previous step
+    setCurrentStep(currentStep - 1);
+    if (currentStep === 2) {
+      setModalTitle('Informações');
+    } else if (currentStep === 3) {
+      setModalTitle('Instituição');
+    }
   };
 
   return (
-    <div className="flex flex-col w-full bg-primary p-4">
-      {currentStep === 1 ? (
-        <form onSubmit={handleSubmitPatients(onSubmitPatient)} className="flex flex-col">
-          <Grid container spacing={2}>
-            <Grid item xs={12} >
-              <TextField
-                {...registerPatients('name', { required: true })}
-                type="text"
-                defaultValue={patient?.name}
-                label="Nome"
-                variant="outlined"
-                fullWidth
-                required
-              />
+    <Box className="bg-primary p-6">
+      <Typography>{modalTitle}</Typography>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {currentStep === 1 && (
+          <div>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  label="Nome"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.name")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="date"
+                  label="Data de nascimento"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("patient.birthDate")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Idade"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.age")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Nome do pai"
+                  variant="outlined"
+                  fullWidth
+                  {...register("patient.father")}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Nome da mãe"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.mother")}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('birthDate', { required: true })}
-                type="date"
-                defaultValue={patient?.birthDate}
-                label="Data de Nascimento"
-                variant="outlined"
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('age', { required: true })}
-                type="number"
-                defaultValue={patient?.age}
-                label="Idade"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                {...registerPatients('father', { required: true })}
-                type="text"
-                defaultValue={patient?.father}
-                label="Pai"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                {...registerPatients('mother', { required: true })}
-                type="text"
-                defaultValue={patient?.mother}
-                label="Mãe"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                {...registerPatients('guardian', { required: true })}
-                type="text"
-                defaultValue={patient?.guardian}
-                label="Responsável"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('address', { required: true })}
-                type="text"
-                defaultValue={patient?.address}
-                label="Endereço"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('phone', { required: true })}
-                type="text"
-                defaultValue={patient?.phone}
-                label="Telefone"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('school', { required: true })}
-                type="text"
-                defaultValue={patient?.school}
-                label="Nome da Escola"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('period', { required: true })}
-                type="text"
-                defaultValue={patient?.period}
-                label="Período"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerPatients('teacher', { required: true })}
-                type="text"
-                defaultValue={patient?.teacher}
-                label="Nome da Professora"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-
-          <div className="flex justify-between mt-3">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setCurrentStep(currentStep + 1)}
-            >
-              Continuar
-            </Button>
           </div>
-        </form>
-      ) : (
-        <form onSubmit={handleSubmitAppointments(onSubmitAppointment)} className="flex flex-col">
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerAppointments('consultationDate', { required: true })}
-                type="date"
-                defaultValue={appointment?.consultationDate}
-                label="Data da Consulta"
-                variant="outlined"
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-          </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                {...registerAppointments('startTime', { required: true })}
-                type="time"
-                defaultValue={appointment?.startTime}
-                label="Hora de Início"
-                variant="outlined"
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+        )}
+        {currentStep === 2 && (
+          <div>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  label="Responsável"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.guardian")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Endereço"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.address")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Telefone"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.phone")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Nome da Escola"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.school")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Período"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.period")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="text"
+                  label="Nome da Professora"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  {...register("patient.teacher")}
+                />
+              </Grid>
             </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              {...registerAppointments('endTime', { required: true })}
-              type="time"
-              defaultValue={appointment?.endTime}
-              label="Hora de Término"
-              variant="outlined"
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-        </Grid>
-          <div className="flex justify-between mt-3">
+          </div>
+        )}
+        {currentStep === 3 && (
+          <div>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  type="date"
+                  label="Data da Consulta"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("appointment.consultationDate")}
+
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="time"
+                  label="Hora de Início"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("appointment.startTime")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="time"
+                  label="Hora de Término"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("appointment.endTime")}
+                />
+              </Grid>
+            </Grid>
+          </div>
+        )}
+        <div className="flex justify-between mt-3">
+          {currentStep !== 1 && (
             <Button
+              type="button"
               variant="contained"
               color="primary"
               onClick={handlePreviousStep}
             >
               Voltar
             </Button>
+          )}
+          {currentStep !== 3 && (
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              onClick={handleNextStep}
+            >
+              Continuar
+            </Button>
+          )}
+          {currentStep === 3 && (
             <Button
               type="submit"
               variant="contained"
@@ -231,9 +250,9 @@ export const AppointmentForm = ({ appointment, patient }: IAppointmentForm) => {
             >
               {appointment ? 'Atualizar' : 'Salvar Consulta'}
             </Button>
-          </div>
-        </form>
-      )}
-    </div>
+          )}
+        </div>
+      </form>
+    </Box>
   );
 };

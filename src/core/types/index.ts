@@ -24,6 +24,14 @@ export interface IAppointmentContext {
   updateAppointment(appointment: IAppointments): void
 }
 
+export interface IPatientContext {
+  patients: IPatients[]
+  setPatients: React.Dispatch<React.SetStateAction<IPatients[]>>
+  savePatient(patient: IPatients): void
+  removePatient(id: string): void
+  updatePatient(patient: IPatients): void
+}
+
 export interface IAppointmentForm {
   id?: string
   patientId: string;
@@ -120,4 +128,27 @@ export interface IModal {
 
 export interface ICalendarComponent {
   getDate(date: Date | string): void
+}
+
+export interface IStep1Data {
+  name: string;
+  dateOfBirth: string;
+  age: string;
+  fatherName: string;
+  motherName: string;
+}
+
+export interface IStep2Data {
+  responsible: string;
+  address: string;
+  phone: string;
+  schoolName: string;
+  period: string;
+  teacherName: string;
+}
+
+export interface IStep3Data {
+  consultationDate: string;
+  startTime: string;
+  endTime: string;
 }
