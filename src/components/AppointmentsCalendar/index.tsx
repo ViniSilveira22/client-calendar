@@ -38,7 +38,7 @@ export const AppointmentsCalendar = () => {
           <div className="h-22 flex w-full flex-col overflow-y-auto py-4 scrollbar-thin">
             {appointments?.length ? (
               appointments.map((appointment) => (
-                <StrictMode key={appointment.id_consulta.toString()}>
+                <StrictMode key={appointment.id.toString()}>
                   <AppointmentCard {...appointment} />
                 </StrictMode>
               ))
@@ -50,11 +50,11 @@ export const AppointmentsCalendar = () => {
       </div>
       <div className="mx-8 flex w-full overflow-y-auto py-8 scrollbar-thin scrollbar-thumb-transparent xl:flex-1">
         <ScheduleView
-          appointments={appointments?.map(({ id_consulta, data_consulta, hora_inicio, hora_fim, nome_paciente }) => ({
-            id: id_consulta,
-            startDate: new Date(`${data_consulta}T${hora_inicio}`), 
-            endDate: new Date(`${data_consulta}T${hora_fim}`), 
-            title: `Consulta com ${nome_paciente}`,
+          appointments={appointments?.map(({ id, consultationDate, startTime, endTime, patientName }) => ({
+            id: id,
+            startDate: new Date(`${consultationDate}T${startTime}`), 
+            endDate: new Date(`${consultationDate}T${endTime}`), 
+            title: `Consulta com ${patientName}`,
           }))}
           currentDate={currentDate}
         />

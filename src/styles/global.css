@@ -342,4 +342,16 @@ abbr[title] {
 .ReactModal__Overlay--after-open {
   opacity: 1;
 }
+.step-one {
+  /* Estilos para o primeiro step */
+  max-width: 800px; /* Ajuste a largura conforme necessário */
+  max-height: 80vh; /* Ajuste a altura conforme necessário */
+}
+
+.step-two {
+  /* Estilos para o segundo step */
+  max-width: 500px; /* Ajuste a largura conforme necessário */
+  max-height: 70vh; /* Ajuste a altura conforme necessário */
+}
+
 

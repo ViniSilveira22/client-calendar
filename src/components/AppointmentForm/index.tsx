@@ -1,36 +1,29 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import Select from 'react-select';
-import ClinicService from '@/service/ClinicService';
+import { useState } from 'react';
 import { useAppointmentsContext } from '@/context/AppointmentsContext';
 import { useStateContext } from '@/context/StateContext';
 import { IAppointments, IPatients } from '@/core/types';
+import { TextField, Button,  Grid } from '@mui/material';
 
 interface IAppointmentForm {
   appointment?: IAppointments;
+  patient?: IPatients;
 }
 
-export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
-  const { saveAppointment, removeAppointment, updateAppointment } =
-    useAppointmentsContext();
+export const AppointmentForm = ({ appointment, patient }: IAppointmentForm) => {
+  const { saveAppointment, removeAppointment, updateAppointment } = useAppointmentsContext();
   const { setModal } = useStateContext();
-  const { register, handleSubmit } = useForm<IAppointments>();
-  const [patients, setPatients] = useState<any[]>([]);
-  const [selectedPatient, setSelectedPatient] = useState<any>(null); 
 
-  useEffect(() => {
-    async function fetchPatients() {
-      try {
-        const patients: IPatients[] = await ClinicService.getPatients();
-        setPatients(patients);
-      } catch (error) {
-        console.error('Error fetching patients:', error);
-      }
-    }    
-    fetchPatients();
-  }, []);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  const onSubmit: SubmitHandler<IAppointments> = async (data) => {
+  const { register: registerAppointments, handleSubmit: handleSubmitAppointments } = useForm<IAppointments>();
+  const { register: registerPatients, handleSubmit: handleSubmitPatients } = useForm<IPatients>();
+
+  const onSubmitPatient: SubmitHandler<IPatients> = async () => {
+    setCurrentStep(2);
+  };
+
+  const onSubmitAppointment: SubmitHandler<IAppointments> = async (data) => {
     try {
       if (appointment) {
         updateAppointment(data);
@@ -43,81 +36,204 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
     }
   };
 
+
+
+  const handlePreviousStep = () => {
+    setCurrentStep(currentStep - 1); // Go back to the previous step
+  };
+
   return (
-    <div className="flex w-full justify-center bg-primary p-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-        <label htmlFor="title" className="text-sm font-medium">
-          Paciente:
-        </label>
-        <input
-          {...register('id_appointment')}
-          id="id_paciente"
-          type="hidden"
-          value={appointment?.id_appointment}
-        />
-        <Select
-          className="text-sm font-medium"
-          isClearable={true}
-          options={patients.map(patient => ({
-            value: patient.id_paciente,
-            label: patient.nome_crianca.toString(),
-          }))}
-          onChange={(selectedOption) => setSelectedPatient(selectedOption)}
-          value={selectedPatient} 
-          required
-        />
-        <label htmlFor="date" className="text-sm font-medium">
-          Data consulta:
-        </label>
-        <input
-          {...register('appointment_date', { required: true })}
-          type="date"
-          defaultValue={appointment?.appointment_date}
-          className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
-        />
-        <label htmlFor="time" className="text-sm font-medium">
-          Hora início:
-        </label>
-        <input
-          {...register('beginning', { required: true })}
-          type="time"
-          defaultValue={appointment?.beginning}
-          className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
-        />
-        <label htmlFor="time" className="text-sm font-medium">
-          Hora fim:
-        </label>
-        <input
-          {...register('end', { required: true })}
-          type="time"
-          defaultValue={appointment?.end}
-          className="mb-2 rounded-lg bg-search p-2 text-sm font-medium text-navTitle"
-        />
-        {appointment ? (
-          <span className="flex flex-row gap-x-2">
-            <button className="mt-3 flex flex-1 justify-center rounded-lg bg-navHover py-2 px-4 text-primary transition-colors hover:bg-secondary hover:text-textHover">
-              Atualizar
-            </button>
-            <button
-              className="mt-3 flex rounded-lg bg-deleteBtn py-2 px-4 transition-colors hover:bg-deleteBtnHover hover:text-secondary"
-              onClick={(e) => {
-                e.preventDefault()
-                removeAppointment(appointment.id_appointment)
-                setModal({ open: false })
-              }}
+    <div className="flex flex-col w-full bg-primary p-4">
+      {currentStep === 1 ? (
+        <form onSubmit={handleSubmitPatients(onSubmitPatient)} className="flex flex-col">
+          <Grid container spacing={2}>
+            <Grid item xs={12} >
+              <TextField
+                {...registerPatients('name', { required: true })}
+                type="text"
+                defaultValue={patient?.name}
+                label="Nome"
+                variant="outlined"
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('birthDate', { required: true })}
+                type="date"
+                defaultValue={patient?.birthDate}
+                label="Data de Nascimento"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('age', { required: true })}
+                type="number"
+                defaultValue={patient?.age}
+                label="Idade"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...registerPatients('father', { required: true })}
+                type="text"
+                defaultValue={patient?.father}
+                label="Pai"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...registerPatients('mother', { required: true })}
+                type="text"
+                defaultValue={patient?.mother}
+                label="Mãe"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...registerPatients('guardian', { required: true })}
+                type="text"
+                defaultValue={patient?.guardian}
+                label="Responsável"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('address', { required: true })}
+                type="text"
+                defaultValue={patient?.address}
+                label="Endereço"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('phone', { required: true })}
+                type="text"
+                defaultValue={patient?.phone}
+                label="Telefone"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('school', { required: true })}
+                type="text"
+                defaultValue={patient?.school}
+                label="Nome da Escola"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('period', { required: true })}
+                type="text"
+                defaultValue={patient?.period}
+                label="Período"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerPatients('teacher', { required: true })}
+                type="text"
+                defaultValue={patient?.teacher}
+                label="Nome da Professora"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+
+          <div className="flex justify-between mt-3">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setCurrentStep(currentStep + 1)}
             >
-              Excluir
-            </button>
-          </span>
-        ) : (
-          <button
-            type="submit"
-            className="mt-3 rounded-lg bg-navHover py-2 px-4 text-primary transition-colors hover:bg-secondary hover:text-textHover"
-          >
-          {appointment ? 'Atualizar' : 'Marcar consulta'}
-        </button>
-        )}
-      </form>
+              Continuar
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={handleSubmitAppointments(onSubmitAppointment)} className="flex flex-col">
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerAppointments('consultationDate', { required: true })}
+                type="date"
+                defaultValue={appointment?.consultationDate}
+                label="Data da Consulta"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+          </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...registerAppointments('startTime', { required: true })}
+                type="time"
+                defaultValue={appointment?.startTime}
+                label="Hora de Início"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              {...registerAppointments('endTime', { required: true })}
+              type="time"
+              defaultValue={appointment?.endTime}
+              label="Hora de Término"
+              variant="outlined"
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+        </Grid>
+          <div className="flex justify-between mt-3">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handlePreviousStep}
+            >
+              Voltar
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              {appointment ? 'Atualizar' : 'Salvar Consulta'}
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
-  )
-}
+  );
+};

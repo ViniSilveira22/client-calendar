@@ -6,10 +6,10 @@ import { Clock } from '@/Images'
 
 export const AppointmentCard = (appointment: IAppointments) => {
   const { setModal } = useStateContext()
-  const formatDate = moment(appointment.data_consulta).format('DD MMM, YYYY')
-  const formatStart = moment(appointment.hora_inicio, 'HH:mm A').format('HH:mm A')
-  const formatEnd = moment(appointment.hora_fim, 'HH:mm A').format('HH:mm A')
-  const patientName = appointment.nome_paciente
+  const formatDate = moment(appointment.consultationDate).format('DD MMM, YYYY')
+  const formatStart = moment(appointment.startTime, 'HH:mm A').format('HH:mm A')
+  const formatEnd = moment(appointment.endTime, 'HH:mm A').format('HH:mm A')
+  const patientName = appointment.patientName
 
   return (
     <article

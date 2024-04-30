@@ -25,32 +25,38 @@ export interface IAppointmentContext {
 }
 
 export interface IAppointmentForm {
-  id_appointment?: string
-  appointment_date: string;
-  beginning: string;
-  end: string;
+  id?: string
+  patientId: string;
+  patientName: string;
+  consultationDate: string;
+  startTime: string;
+  endTime: string;
   edit?: boolean
 }
 
 export interface IAppointments {
-  id_appointment: string;
-  appointment_date: string;
-  beginning: string;
-  end: string;
+  id: string;
+  patientId: string;
+  patientName: string;
+  consultationDate: string;
+  startTime: string;
+  endTime: string;
 }
 
 
 export interface IPatientForm {
-  id_patient?: string
+  id?: string
   name?: string;
   age?: number;
-  birth?: string;
+  birthDate?: string;
   father?: string;
   mother?: string;
   guardian: string;
   address?: string;
   phone?: string;
   school?: string;
+  period?: string;
+  teacher?: string;
   diagnosis?: string;
   edit?: boolean
 }
@@ -59,13 +65,15 @@ export interface IPatients {
   id_patient: string
   name: string;
   age: number;
-  birth: string;
+  birthDate: string;
   father: string;
   mother: string;
   guardian: string;
   address: string;
   phone: string;
   school: string;
+  period: string;
+  teacher: string;
   diagnosis: string;
 }
 

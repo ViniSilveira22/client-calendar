@@ -43,7 +43,7 @@ export const CalendarComponent = ({ getDate }: ICalendarComponent) => {
 
   const hasAppointments = (date: Date): boolean => {
     const appointmentDates = appointments.map(appointment => {
-      const utcDate = new Date(appointment.data_consulta);
+      const utcDate = new Date(appointment.consultationDate);
       const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
       return localDate.toLocaleDateString();
     });

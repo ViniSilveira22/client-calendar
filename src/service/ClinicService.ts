@@ -25,6 +25,21 @@ class ClinicService {
     return data.patients.map((patient: IPatients, index: number) => ({ ...patient, id: index + 1 }));
   }
 
+  static async addPatient(patient: IPatients): Promise<any> {
+    const formData = new FormData();
+    Object.entries(patient).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const response = await fetch(`${this.BASE_URL}/patient`, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  }
+
+
   static async updatePatient(id: number, patient: any): Promise<any> {
     const formData = new FormData();
   
