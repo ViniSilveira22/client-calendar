@@ -17,17 +17,18 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [modalTitle, setModalTitle] = useState('Informações');
   const { register, handleSubmit } = useForm<IAppointmentForm>()
-   const onSubmit: SubmitHandler<IAppointmentForm> = async(data) => {
-      if(appointment){ 
-      } else {
-        console.log('teste');
-        savePatient(data.patient!);
-        console.log('teste2');
-
-        //saveAppointment(data.appointment!);
-      }
-
+  
+  const onSubmit: SubmitHandler<IAppointmentForm> = async(data) => {
+    const patientId = savePatient(data.patient!);
+  
+    const appointmentData = {
+      ...data.appointment!,
+      patientId: patientId!
+    };
+  
+    saveAppointment(appointmentData);
   };
+
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
     if (currentStep === 1) {
@@ -248,7 +249,7 @@ export const AppointmentForm = ({ appointment }: IAppointmentForm) => {
               variant="contained"
               color="primary"
             >
-              {appointment ? 'Atualizar' : 'Salvar Consulta'}
+              {appointment ? 'Atualizar Consulta' : 'Salvar Consulta'}
             </Button>
           )}
         </div>

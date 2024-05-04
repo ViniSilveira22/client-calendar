@@ -1,13 +1,16 @@
-import classNames from 'classnames'
-import Link from 'next/link'
-import { useMemo } from 'react'
+import classNames from 'classnames';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { useStateContext } from '@/context/StateContext';
+import { INavButtons } from '@/core/types';
+import Svg from '@/Images';
 
-import { useStateContext } from '@/context/StateContext'
-import { INavButtons } from '@/core/types'
-import Svg from '@/Images'
+interface NavButtonsProps extends INavButtons {
+  onSelectComponent: (component: any) => void;
+}
 
-export default function NavButtons({ item }: INavButtons) {
-  const { selected, setSelected } = useStateContext()
+export default function NavButtons({ item, onSelectComponent }: NavButtonsProps) {
+  const { selected, setSelected } = useStateContext();
 
   const renderItems = useMemo(() => {
     return item.map((item) => (
@@ -18,7 +21,8 @@ export default function NavButtons({ item }: INavButtons) {
           item.name === selected.name && 'bg-navHover'
         )}
         onClick={() => {
-          setSelected(item)
+          setSelected(item);
+          onSelectComponent(item);
         }}
       >
         <div style={{ minWidth: '26px' }} className="flex items-center">
@@ -30,7 +34,8 @@ export default function NavButtons({ item }: INavButtons) {
           </a>
         </Link>
       </span>
-    ))
-  }, [item, selected, setSelected])
-  return <>{renderItems}</>
+    ));
+  }, [item, onSelectComponent, selected, setSelected]);
+
+  return <>{renderItems}</>;
 }

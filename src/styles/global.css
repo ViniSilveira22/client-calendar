@@ -269,29 +269,11 @@ abbr[title] {
   }
 }
 
-.step-one {
-  /* Estilos para o primeiro step */
-  max-width: 800px; /* Ajuste a largura conforme necessário */
-  max-height: 80vh; /* Ajuste a altura conforme necessário */
-}
-
-.step-two {
-  /* Estilos para o segundo step */
-  max-width: 500px; /* Ajuste a largura conforme necessário */
-  max-height: 70vh; /* Ajuste a altura conforme necessário */
-}
-
 .custom-modal {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 620px; /* Defina a largura desejada */
-  max-width: 600px; /* Defina a largura máxima desejada */
-  margin: 0 auto; /* Centralize horizontalmente */
+  width: 620px;
+  max-width: 600px;
+  margin: 0 auto;
 }
-
-
-.custom-modal .modal-content {
-  /* Adicione estilos para controlar o tamanho do conteúdo dentro do modal aqui */
-}
-

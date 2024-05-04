@@ -17,7 +17,6 @@ const PatientProvider = ({ children }: IChildren) => {
   const [patients, setPatients] = useState<IPatients[]>([])
 
   const savePatient = async (patient: IPatients) => {
-    console.log(patient);
     try {
       await ClinicService.addPatient(patient);
       toast.success(`Consulta criada!`);

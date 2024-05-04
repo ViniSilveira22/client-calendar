@@ -7,6 +7,6 @@ export const controls = [
 ]
 
 export const systems = [
-  { name: 'Configurações', href: '/', icon: Asset.Settings },
-  { name: 'Sair', href: '/', icon: Asset.Logout }
+  { name: 'Configurações', href: '/configs', icon: Asset.Settings },
+  { name: 'Sair', href: '/logout', icon: Asset.Logout }
 ]

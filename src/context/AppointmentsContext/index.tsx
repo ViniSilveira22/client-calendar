@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 import ClinicService from '@/service/ClinicService';
-import { IChildren, IAppointments, IAppointmentContext, IPatients } from '@/core/types'
+import { IChildren, IAppointments, IAppointmentContext } from '@/core/types'
 
 const defaultAppointment: IAppointmentContext = {
   appointments: [],

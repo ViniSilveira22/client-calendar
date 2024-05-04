@@ -129,26 +129,3 @@ export interface IModal {
 export interface ICalendarComponent {
   getDate(date: Date | string): void
 }
-
-export interface IStep1Data {
-  name: string;
-  dateOfBirth: string;
-  age: string;
-  fatherName: string;
-  motherName: string;
-}
-
-export interface IStep2Data {
-  responsible: string;
-  address: string;
-  phone: string;
-  schoolName: string;
-  period: string;
-  teacherName: string;
-}
-
-export interface IStep3Data {
-  consultationDate: string;
-  startTime: string;
-  endTime: string;
-}

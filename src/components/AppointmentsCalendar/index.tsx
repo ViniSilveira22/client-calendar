@@ -5,6 +5,7 @@ import { AppointmentCard } from './AppointmentCard';
 import { SchedulerDateTime } from '@devexpress/dx-react-scheduler';
 import ClinicService from '@/service/ClinicService';
 import { IAppointments } from '@/core/types'
+import { CreateAppointmentsButton } from '@/components/Header/CreateAppointmentButton'
 
 export const AppointmentsCalendar = () => {
   const [currentDate, setCurrentDate] = useState<SchedulerDateTime>(new Date());
@@ -34,7 +35,9 @@ export const AppointmentsCalendar = () => {
       <div className="w-80 py-8">
       <CalendarComponent getDate={getDate} />
         <div className="mt-7 flex w-full flex-col">
+          <CreateAppointmentsButton />
           <p className="mb-3">Consultas do dia</p>
+
           <div className="h-22 flex w-full flex-col overflow-y-auto py-4 scrollbar-thin">
             {appointments?.length ? (
               appointments.map((appointment) => (

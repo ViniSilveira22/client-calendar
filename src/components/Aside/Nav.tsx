@@ -1,23 +1,30 @@
 import { controls, systems } from '@/mocks/navItems'
+import { useState } from 'react';
+import NavButtons from './NavButtons';
 
-import NavButtons from './NavButtons'
+const Nav = ({ onSelectComponent }: any) => {
+  const [_, setSelectedComponent] = useState(null);
 
-const Nav = () => {
+  const handleSelectComponent = (component: any) => {
+    setSelectedComponent(component); 
+    onSelectComponent(component); 
+  };
+
   return (
     <nav className="mt-5 flex w-full flex-col items-start justify-between overflow-y-scroll scrollbar xl:h-full">
       <div className="w-full flex-col justify-center lg:flex">
-        <NavButtons item={controls} />
+        <NavButtons item={controls} onSelectComponent={handleSelectComponent} />
       </div>
 
       <div className="mt-5 flex w-full flex-col justify-between">
         <div className="mt-5 flex w-full flex-col justify-between">
           <div className="w-full flex-col justify-center gap-y-5 lg:flex">
-            <NavButtons item={systems} />
+            <NavButtons item={systems} onSelectComponent={handleSelectComponent} />
           </div>
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;

@@ -1,12 +1,10 @@
-import classNames from 'classnames'
-import { memo } from 'react'
+import classNames from 'classnames';
+import { memo } from 'react';
+import { useStateContext } from '@/context/StateContext';
+import Nav from './Nav';
 
-import { useStateContext } from '@/context/StateContext'
-
-import Nav from './Nav'
-
-const Aside = () => {
-  const { menu } = useStateContext()
+const Aside = ({ onSelectComponent }: any) => {
+  const { menu } = useStateContext();
 
   return (
     <aside
@@ -15,9 +13,9 @@ const Aside = () => {
         menu && 'nav-close'
       )}
     >
-      <Nav />
+      <Nav onSelectComponent={onSelectComponent} />
     </aside>
-  )
-}
+  );
+};
 
-export default memo(Aside)
+export default memo(Aside);

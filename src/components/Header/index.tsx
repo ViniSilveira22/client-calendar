@@ -1,5 +1,4 @@
 import { Hamburguer } from '@/components/Hamburguer'
-import { CreateAppointmentsButton } from './CreateAppointmentButton'
 import HeaderDate from './Date'
 
 export const Header = () => {
@@ -9,11 +8,7 @@ export const Header = () => {
           <Hamburguer />
         <div>
           <HeaderDate />
-        </div>
-        
-        <div className="flex items-center">
-          <CreateAppointmentsButton />
-        </div>
+        </div> 
       </nav>
     </header>
   )
