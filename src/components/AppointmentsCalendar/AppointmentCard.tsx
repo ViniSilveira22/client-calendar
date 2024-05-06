@@ -9,7 +9,7 @@ export const AppointmentCard = (appointment: IAppointments) => {
   const formatDate = moment(appointment.consultationDate).format('DD MMM, YYYY')
   const formatStart = moment(appointment.startTime, 'HH:mm A').format('HH:mm A')
   const formatEnd = moment(appointment.endTime, 'HH:mm A').format('HH:mm A')
-  const patientName = appointment.patientName
+  const patientName = appointment.patient.name
 
   return (
     <article

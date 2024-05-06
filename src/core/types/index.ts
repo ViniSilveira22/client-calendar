@@ -44,8 +44,7 @@ export interface IAppointmentForm {
 
 export interface IAppointments {
   id: string;
-  patientId: string;
-  patientName: string;
+  patient: IPatients;
   consultationDate: string;
   startTime: string;
   endTime: string;
@@ -70,7 +69,7 @@ export interface IPatientForm {
 }
 
 export interface IPatients {
-  id_patient: string
+  id: string
   name: string;
   age: number;
   birthDate: string;

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 import ClinicService from '@/service/ClinicService';
-import { IChildren, IPatientContext, IPatients } from '@/core/types'
+import { IChildren, IPatients, IPatientContext } from '@/core/types'
 
 const defaultPatient: IPatientContext = {
   patients: [],
@@ -16,9 +16,9 @@ const usePatientsContext = () => useContext(PatientsContext)
 const PatientProvider = ({ children }: IChildren) => {
   const [patients, setPatients] = useState<IPatients[]>([])
 
-  const savePatient = async (patient: IPatients) => {
+  const savePatient = async (Patient: IPatients) => {
     try {
-      await ClinicService.addPatient(patient);
+      await ClinicService.addPatient(Patient);
       toast.success(`Consulta criada!`);
     } catch (error) {
       toast.error('Erro ao criar consulta. Por favor, tente novamente.');
@@ -34,9 +34,9 @@ const PatientProvider = ({ children }: IChildren) => {
     }
   }
 
-  const updatePatient = async(patient: IPatients) => {
+  const updatePatient = async(Patient: IPatients) => {
     try {
-      await ClinicService.updatePatient(1, patient);
+      await ClinicService.addPatient(Patient);
       toast.success(`Consulta atualizada!`);
     } catch (error) {
       toast.error('Erro ao criar consulta. Por favor, tente novamente.');

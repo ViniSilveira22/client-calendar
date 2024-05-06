@@ -273,7 +273,25 @@ abbr[title] {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 620px;
-  max-width: 600px;
   margin: 0 auto;
+  min-width: 20%;
+  max-width: 500;
+  min-height: 10%;
+  max-height: 150;
+  }
+
+.modal-content {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.custom-form-control {
+  width: 100%;
+}
+
+.custom-text-field {
+  width: 100%;
+  margin-bottom: 10px;
 }

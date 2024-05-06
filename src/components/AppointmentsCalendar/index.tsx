@@ -4,7 +4,7 @@ import { CalendarComponent } from './Calendar';
 import { AppointmentCard } from './AppointmentCard';
 import { SchedulerDateTime } from '@devexpress/dx-react-scheduler';
 import ClinicService from '@/service/ClinicService';
-import { IAppointments } from '@/core/types'
+import { IAppointments, IPatients } from '@/core/types'
 import { CreateAppointmentsButton } from '@/components/Header/CreateAppointmentButton'
 
 export const AppointmentsCalendar = () => {
@@ -37,7 +37,6 @@ export const AppointmentsCalendar = () => {
         <div className="mt-7 flex w-full flex-col">
           <CreateAppointmentsButton />
           <p className="mb-3">Consultas do dia</p>
-
           <div className="h-22 flex w-full flex-col overflow-y-auto py-4 scrollbar-thin">
             {appointments?.length ? (
               appointments.map((appointment) => (
@@ -52,15 +51,15 @@ export const AppointmentsCalendar = () => {
         </div>
       </div>
       <div className="mx-8 flex w-full overflow-y-auto py-8 scrollbar-thin scrollbar-thumb-transparent xl:flex-1">
-        <ScheduleView
-          appointments={appointments?.map(({ id, consultationDate, startTime, endTime, patientName }) => ({
-            id: id,
-            startDate: new Date(`${consultationDate}T${startTime}`), 
-            endDate: new Date(`${consultationDate}T${endTime}`), 
-            title: `Consulta com ${patientName}`,
-          }))}
-          currentDate={currentDate}
-        />
+      <ScheduleView
+        appointments={appointments?.map(({ id, consultationDate, startTime, endTime, patient }) => ({
+          id: id,
+          startDate: new Date(`${consultationDate}T${startTime}`), 
+          endDate: new Date(`${consultationDate}T${endTime}`), 
+          title: `Consulta com ${patient.name}`,
+        }))}
+        currentDate={currentDate}
+      />
       </div>
     </section>
   );
