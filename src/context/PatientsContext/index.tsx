@@ -1,61 +1,71 @@
-import { createContext, useContext, useState } from 'react'
-import { toast } from 'react-toastify'
-import ClinicService from '@/service/ClinicService';
-import { IChildren, IPatients, IPatientContext } from '@/core/types'
+import { createContext, useContext } from 'react';
+import { toast } from 'react-toastify';
+import { useQuery, useQueryClient } from 'react-query';
+import { useAddPatient, useDeletePatient, useUpdatePatient, useGetPatients } from '@/service/ClinicService';
+import { IChildren, IPatients, IPatientContext } from '@/core/types';
 
 const defaultPatient: IPatientContext = {
   patients: [],
-  setPatients: () => [],
   savePatient: () => null,
   removePatient: () => null,
-  updatePatient: () => null
-}
+  updatePatient: () => null,
+  getPatients: () => null,
+};
 
-const PatientsContext = createContext(defaultPatient)
-const usePatientsContext = () => useContext(PatientsContext)
+const PatientsContext = createContext(defaultPatient);
+const usePatientsContext = () => useContext(PatientsContext);
+
 const PatientProvider = ({ children }: IChildren) => {
-  const [patients, setPatients] = useState<IPatients[]>([])
+  const queryClient = useQueryClient();
 
-  const savePatient = async (Patient: IPatients) => {
+  const savePatientMutation = useAddPatient();
+  const deletePatientMutation = useDeletePatient();
+  const updatePatientMutation = useUpdatePatient();
+  const getPatientsQuery = useGetPatients();
+
+  const savePatient = async (patient: IPatients) => {
     try {
-      await ClinicService.addPatient(Patient);
-      toast.success(`Consulta criada!`);
+      await savePatientMutation.mutateAsync(patient);
+      toast.success('Paciente criado com sucesso!');
+      queryClient.invalidateQueries('patients');
     } catch (error) {
-      toast.error('Erro ao criar consulta. Por favor, tente novamente.');
+      toast.error('Erro ao criar paciente. Por favor, tente novamente.');
     }
   };
-  
-  const removePatient = async(id: string) => {
-    try {
-      await ClinicService.deletePatient(id);
-      toast.success(`Consulta excluida!`);
-    } catch (error) {
-      toast.error('Erro ao excluir consulta. Por favor, tente novamente.');
-    }
-  }
 
-  const updatePatient = async(Patient: IPatients) => {
+  const removePatient = async (id: string) => {
     try {
-      await ClinicService.addPatient(Patient);
-      toast.success(`Consulta atualizada!`);
+      await deletePatientMutation.mutateAsync(id);
+      toast.success('Paciente excluído com sucesso!');
+      queryClient.invalidateQueries('patients');
     } catch (error) {
-      toast.error('Erro ao criar consulta. Por favor, tente novamente.');
+      toast.error('Erro ao excluir paciente. Por favor, tente novamente.');
     }
-  }
+  };
+
+  const updatePatient = async (updatedPatient: IPatients) => {
+    try {
+      //await updatePatientMutation.mutateAsync(updatedPatient);
+      toast.success('Paciente atualizado com sucesso!');
+      queryClient.invalidateQueries('patients');
+    } catch (error) {
+      toast.error('Erro ao atualizar paciente. Por favor, tente novamente.');
+    }
+  };
 
   return (
     <PatientsContext.Provider
       value={{
-        patients,
-        setPatients,
+        patients: getPatientsQuery.data || [],
         savePatient,
         removePatient,
-        updatePatient
+        updatePatient,
+        getPatients: getPatientsQuery.refetch,
       }}
     >
       {children}
     </PatientsContext.Provider>
-  )
-}
+  );
+};
 
-export { PatientProvider, usePatientsContext }
+export { PatientProvider, usePatientsContext };

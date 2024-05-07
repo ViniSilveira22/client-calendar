@@ -18,24 +18,23 @@ export interface ISchedulerView {
 
 export interface IAppointmentContext {
   appointments: IAppointments[]
-  setAppointments: React.Dispatch<React.SetStateAction<IAppointments[]>>
   saveAppointment(appointment: IAppointments): void
   removeAppointment(id: string): void
-  updateAppointment(appointment: IAppointments): void
+  updateAppointment(appointment: IAppointmentForm): void
+  getAppointments(): void
 }
 
 export interface IPatientContext {
   patients: IPatients[]
-  setPatients: React.Dispatch<React.SetStateAction<IPatients[]>>
   savePatient(patient: IPatients): void
   removePatient(id: string): void
   updatePatient(patient: IPatients): void
+  getPatients(): void
 }
 
 export interface IAppointmentForm {
   id?: string
   patientId: string;
-  patientName: string;
   consultationDate: string;
   startTime: string;
   endTime: string;

@@ -1,28 +1,34 @@
-import 'react-calendar/dist/Calendar.css'
-import '@/styles/global.css'
-import '@/styles/typography.css'
-import 'react-toastify/dist/ReactToastify.css'
+// _app.tsx
 
-import { AppProps } from 'next/app'
-import { ThemeProvider } from 'next-themes'
-import { ToastContainer } from 'react-toastify'
+import React from 'react';
+import { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import { ModalContent } from '@/components/Modal';
+import { AppointmentProvider } from '@/context/AppointmentsContext';
+import { StateProvider } from '@/context/StateContext';
+import 'react-calendar/dist/Calendar.css';
+import '@/styles/global.css';
+import '@/styles/typography.css';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { ModalContent } from '@/components/Modal'
-import { AppointmentProvider } from '@/context/AppointmentsContext'
-import { StateProvider } from '@/context/StateContext'
+const queryClient = new QueryClient();
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider forcedTheme={'light'}>
-      <AppointmentProvider>
-        <StateProvider>
-          <Component {...pageProps} />
-          <ModalContent />
-          <ToastContainer className="text-sm" />
-        </StateProvider>
-      </AppointmentProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppointmentProvider>
+          <StateProvider>
+            <Component {...pageProps} />
+            <ModalContent />
+            <ToastContainer className="text-sm" />
+          </StateProvider>
+        </AppointmentProvider>
+      </QueryClientProvider>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;
