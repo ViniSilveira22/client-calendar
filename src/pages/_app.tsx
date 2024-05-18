@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import { ModalContent } from '@/components/Modal';
 import { AppointmentProvider } from '@/context/AppointmentsContext';
+import { PatientProvider } from '@/context/PatientsContext';
 import { StateProvider } from '@/context/StateContext';
 import 'react-calendar/dist/Calendar.css';
 import '@/styles/global.css';
@@ -20,11 +21,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ThemeProvider forcedTheme={'light'}>
       <QueryClientProvider client={queryClient}>
         <AppointmentProvider>
-          <StateProvider>
-            <Component {...pageProps} />
-            <ModalContent />
-            <ToastContainer className="text-sm" />
-          </StateProvider>
+          <PatientProvider>
+            <StateProvider>
+              <Component {...pageProps} />
+              <ModalContent />
+              <ToastContainer className="text-sm" />
+            </StateProvider>
+          </PatientProvider>
         </AppointmentProvider>
       </QueryClientProvider>
     </ThemeProvider>

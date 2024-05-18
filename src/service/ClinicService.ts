@@ -30,9 +30,8 @@ export function useGetPatients() {
     if (!response.ok) {
       throw new Error('Erro ao buscar pacientes');
     }
-
     const data = await response.json();
-    return data.patients.map((patient: IPatients, index: number) => ({ ...patient, id: index + 1 }));
+    return data.patients.map((patient: IPatients) => ({ ...patient }));
   }, {
     retry: false 
   });

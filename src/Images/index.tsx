@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import ArrowLeft from '@/public/img/arrow-left.svg'
 import ArrowRight from '@/public/img/arrow-right.svg'
 import Burguer from '@/public/img/burguer.svg'
@@ -25,7 +23,7 @@ export enum Asset {
 }
 
 export default function Svg({ name, width, height, alt }: ISvgAssets) {
-  return <Image src={name} width={width} height={height} alt={alt} />
+  return <img src={name} width={width} height={height} alt={alt} />
 }
 
 export {

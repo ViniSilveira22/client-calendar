@@ -40,5 +40,5 @@
     "**/*.tsx",
     "postcss.config.js",
     ".eslintrc"
-, "src/components/PatientTable/utils.js"  ]
+, "src/components/PatientTable/utils.js", "src/components/PatientsTable/Table.tsx", "src/components/PatientsTable/index.tsx"  ]
 }

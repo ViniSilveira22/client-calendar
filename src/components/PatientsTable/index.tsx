@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Avatar } from '@mui/material'; // Importe o Avatar para exibir a foto
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useGetPatients } from '@/service/ClinicService';
 import { IPatients } from '@/core/types';
-
+import Form from './Form'
 const columns: GridColDef[] = [
+  {
+    field: 'profilePhoto',
+    headerName: '',
+    width: 100,
+    sortable: false,
+    renderCell: (params) => ( 
+      <Avatar src={`data:image/jpeg;base64,${params.value}`} sx={{ width: 50, height: 50 }} />
+    ),
+  },
   {
     field: 'name',
     headerName: 'Nome',
@@ -78,15 +87,14 @@ const columns: GridColDef[] = [
 
 const PatientsTable: React.FC = () => {
   const { data: patients, isLoading, isError } = useGetPatients();
-
-
-
   if (isLoading) return <p>Carregando pacientes...</p>;
   if (isError) return <p>Ocorreu um erro ao carregar pacientes.</p>;
-
+  const decodedData = atob("AA==");
+  console.log(decodedData);
+  
   return (
     <Box style={{ height: 500, width: '100%' }}>
-      <DataGrid
+      {/* <DataGrid
         rows={patients || []}
         columns={columns}
         hideFooterPagination
@@ -100,7 +108,9 @@ const PatientsTable: React.FC = () => {
             },
           },
         }}      
-      />
+      /> */}
+      <Form />
+
     </Box>
   );
 }

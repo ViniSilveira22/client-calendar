@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { toast } from 'react-toastify';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { useAddPatient, useDeletePatient, useUpdatePatient, useGetPatients } from '@/service/ClinicService';
 import { IChildren, IPatients, IPatientContext } from '@/core/types';
 
@@ -21,7 +21,7 @@ const PatientProvider = ({ children }: IChildren) => {
   const savePatientMutation = useAddPatient();
   const deletePatientMutation = useDeletePatient();
   const updatePatientMutation = useUpdatePatient();
-  const getPatientsQuery = useGetPatients();
+  const useGetPatientsQuery = useGetPatients();
 
   const savePatient = async (patient: IPatients) => {
     try {
@@ -56,11 +56,11 @@ const PatientProvider = ({ children }: IChildren) => {
   return (
     <PatientsContext.Provider
       value={{
-        patients: getPatientsQuery.data || [],
+        patients: useGetPatientsQuery.data || [],
         savePatient,
         removePatient,
         updatePatient,
-        getPatients: getPatientsQuery.refetch,
+        getPatients: useGetPatientsQuery.data,
       }}
     >
       {children}

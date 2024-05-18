@@ -11,6 +11,8 @@ const Nav = ({ onSelectComponent }: any) => {
   };
 
   return (
+    <div className="flex h-screen bg-gray-50">
+
     <nav className="mt-5 flex w-full flex-col items-start justify-between overflow-y-scroll scrollbar xl:h-full">
       <div className="w-full flex-col justify-center lg:flex">
         <NavButtons item={controls} onSelectComponent={handleSelectComponent} />
@@ -24,6 +26,7 @@ const Nav = ({ onSelectComponent }: any) => {
         </div>
       </div>
     </nav>
+    </div>
   );
 };
 
